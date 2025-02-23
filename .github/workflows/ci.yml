@@ -19,9 +19,11 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npx nx run frontend:build
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
       - run: npx nx run frontend-e2e:e2e
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.24'
-      - run: go test ./backend/tests/...
+      - run: cd backend && go test ./tests/... -count=1
